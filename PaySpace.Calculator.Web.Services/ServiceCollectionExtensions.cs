@@ -6,9 +6,13 @@ namespace PaySpace.Calculator.Web.Services
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddCalculatorHttpServices(this IServiceCollection services)
+        public static IServiceCollection AddWebServices(this IServiceCollection services)
         {
-            services.AddScoped<ICalculatorHttpService, CalculatorHttpService>();
+            services.AddHttpClient<ICalculatorHttpService, CalculatorHttpService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7119/"); // Adjust API URL if needed
+            });
+            return services;
         }
     }
 }

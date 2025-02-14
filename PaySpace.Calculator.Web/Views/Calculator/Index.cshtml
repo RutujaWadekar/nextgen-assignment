@@ -1,0 +1,25 @@
+﻿@model PaySpace.Calculator.Web.Models.CalculateRequestViewModel
+
+<h2>Tax Calculator</h2>
+
+<form method="post" asp-action="Calculate">
+    <div>
+        <label>Postal Code:</label>
+        <input asp-for="PostalCode" class="form-control" />
+        <span asp-validation-for="PostalCode" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Income:</label>
+        <input asp-for="Income" class="form-control" />
+        <span asp-validation-for="Income" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Calculate</button>
+</form>
+
+@if (ViewData["Result"] != null)
+{
+    <h3>Calculated Tax: $@ViewData["Result"]</h3>
+}
+

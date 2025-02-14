@@ -15,7 +15,8 @@ namespace PaySpace.Calculator.API.Controllers
     public sealed class CalculatorController(
         ILogger<CalculatorController> logger,
         IHistoryService historyService,
-        IMapper mapper)
+        IMapper mapper,
+        ITaxCalculatorService taxCalculatorService)
         : ControllerBase
     {
         [HttpPost("calculate-tax")]
@@ -24,8 +25,12 @@ namespace PaySpace.Calculator.API.Controllers
             try
             {
 
-                var result = 0; 
-
+                if (string.IsNullOrWhiteSpace(request.PostalCode))
+                {
+                    return BadRequest("Postal code cannot be null or empty.");
+                }
+                var result = await taxCalculatorService.CalculateTaxAsync(request.Income, request.PostalCode);
+                
                 await historyService.AddAsync(new CalculatorHistory
                 {
                     Tax = result.Tax,
